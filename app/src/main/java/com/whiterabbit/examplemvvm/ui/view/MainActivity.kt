@@ -1,10 +1,11 @@
-package com.whiterabbit.examplemvvm.view
+package com.whiterabbit.examplemvvm.ui.view
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.whiterabbit.examplemvvm.databinding.ActivityMainBinding
-import com.whiterabbit.examplemvvm.viewmodel.QuoteViewModel
+import com.whiterabbit.examplemvvm.ui.viewmodel.QuoteViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,9 +18,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        quoteViewModel.onCreate()
+
         quoteViewModel.quoteModel.observe(this) { currentQuote ->
             binding.tvQuote.text = currentQuote.quote
             binding.tvAuthor.text = currentQuote.author
+        }
+
+        quoteViewModel.isLoading.observe(this) {
+            binding.progress.isVisible = it
         }
 
         binding.viewContainer.setOnClickListener { quoteViewModel.randomQuote() }
