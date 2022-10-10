@@ -1,13 +1,13 @@
 package com.whiterabbit.examplemvvm.domain
 
-import com.whiterabbit.examplemvvm.data.model.QuoteModel
-import com.whiterabbit.examplemvvm.data.model.QuoteProvider
+import com.whiterabbit.examplemvvm.data.QuoteRepository
+import com.whiterabbit.examplemvvm.domain.model.Quote
 import javax.inject.Inject
 
-class GetRandomQuoteUseCase @Inject constructor(private val quoteProvider: QuoteProvider) {
+class GetRandomQuoteUseCase @Inject constructor(private val repository: QuoteRepository) {
 
-    operator fun invoke(): QuoteModel? {
-        val quotes = quoteProvider.quotes
+    suspend operator fun invoke(): Quote? {
+        val quotes = repository.getAllQuotesFromDatabase()
         if (!quotes.isNullOrEmpty()) {
             val randomNumber = (quotes.indices).random()
             return quotes[randomNumber]
